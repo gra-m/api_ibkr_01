@@ -33,7 +33,7 @@ def main():
     time.sleep(3)  # because computer runs code quicker than socket can be built
 
     app.reqContractDetails(1, mycontract)
-    app.run()  # EWrapper run loop
+    app.run()  # EWrapper run loop this removes messages from the queue and calls the associated callback functions
 
 
 # outside main loop, call to "name main idiom" to automatically run main method:
