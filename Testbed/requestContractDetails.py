@@ -1,7 +1,7 @@
 from ibapi.client import *
 from ibapi.wrapper import *
 import time
-import instrument_details
+from Testbed.IBKR_Tools import instrument_details
 
 
 class TestApp01(EClient, EWrapper):
@@ -20,12 +20,15 @@ def main():
     app = TestApp01()
 
     app.connect("127.0.0.1", 4002, 1000)
-    mycontract = Contract()
-    mycontract.symbol = "AAPL"
-    mycontract.secType = "STK"
-    mycontract.exchange = "SMART"
-    mycontract.currency = "USD"
-    mycontract.primaryExchange = "ISLAND"  # nasdaq exchange known as this disambiguation
+    contract = Contract()
+    # STOCK/BOND -> prints all items
+    #mycontract = instrument_details.stockContractApple(contract)
+    # Options -> not printing specific options items
+    # mycontract = instrument_details.optionsRequestApple(contract)
+    # Futures -> not printing specific futures items
+    mycontract = instrument_details.futuresRequestDAX(contract)
+
+    
 
     time.sleep(3)  # because computer runs code quicker than socket can be built
 

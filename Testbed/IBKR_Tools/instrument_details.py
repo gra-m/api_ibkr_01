@@ -1,7 +1,14 @@
 def printInstrumentDetails(contractDetails):
 
+# Note this is not printing Options data when option contract is passed
     print(f"""
-    CONTRACT DETAILS:
+    CONTRACT DETAILS for conId: {contractDetails.contract.conId}
+    
+    NOTE: You can now use: 
+    mycontract = Contract()
+    mycontract.conId = {contractDetails.contract.conId}
+    for ongoing reference.
+    
     {str("marketName:====================")[:30].center(50)} 
     {contractDetails.marketName}
     {str("minTick:====================")[:30].center(50)} 
@@ -88,3 +95,42 @@ def printInstrumentDetails(contractDetails):
     {contractDetails.notes}
     """)
 
+# todo add options print function
+
+
+def stockContractApple(contract):
+    mycontract = contract
+    mycontract.symbol = "AAPL"
+    mycontract.secType = "STK"
+    mycontract.exchange = "SMART"
+    mycontract.currency = "USD"
+    mycontract.primaryExchange = "ISLAND"  # nasdaq exchange known as this disambiguation
+
+    return mycontract
+
+
+def optionsRequestApple(contract):
+    mycontract = contract
+    mycontract.symbol = "AAPL"
+    mycontract.secType = "OPT"
+    mycontract.exchange = "SMART"
+    mycontract.currency = "USD"
+    # https://www.nasdaq.com/market-activity/stocks/aapl/option-chain
+    mycontract.right = "C"  # call
+    mycontract.lastTradeDateOrContractMonth = "20240412"     # no exact expiration date
+    mycontract.strike = "155"  # strike price
+   
+    return mycontract
+
+
+def futuresRequestDAX(contract):
+    mycontract = contract
+    
+    mycontract.symbol = "DAX" # DAX DAX-mini and DAX-micro futures
+    mycontract.secType = "FUT"
+    mycontract.exchange = "EUREX"
+    mycontract.currency = "EUR"
+    mycontract.lastTradeDateOrContractMonth = "202406"
+    mycontract.multiplier = 1   # specify only one future
+    
+    return mycontract
