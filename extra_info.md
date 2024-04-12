@@ -3,6 +3,11 @@ https://interactivebrokers.github.io/tws-api/top_data.html
 #### Historical Data
 https://interactivebrokers.github.io/tws-api/historical_data.html
 
+#### CustomTkinter
+
+https://github.com/TomSchimansky/CustomTkinter/blob/master/examples/complex_example.py
+https://customtkinter.tomschimansky.com/documentation/
+
 ### Connect() is unsuccessful and error: 'No connection could be made because the target machine actively refused it 127.0.0.1:7496' is received. Possible reasons are:
 TWS is running but the setting 'Enable ActiveX and Socket Clients' is not checked and TWS was launched in a paper session so its default socket port is 7497 instead of 7496. Correct.
 
