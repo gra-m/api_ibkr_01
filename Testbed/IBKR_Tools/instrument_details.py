@@ -1,6 +1,7 @@
 def printInstrumentDetails(contractDetails):
 
 # Note this is not printing Options data when option contract is passed
+# used in requestContractDetails.py
     print(f"""
     CONTRACT DETAILS for conId: {contractDetails.contract.conId}
     
@@ -104,7 +105,7 @@ def stockContractApple(contract):
     mycontract.secType = "STK"
     mycontract.exchange = "SMART"
     mycontract.currency = "USD"
-    mycontract.primaryExchange = "ISLAND"  # nasdaq exchange known as this disambiguation
+    # mycontract.primaryExchange = "ISLAND"  # nasdaq exchange known as this (disambiguation)
 
     return mycontract
 

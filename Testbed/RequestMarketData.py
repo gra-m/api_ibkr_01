@@ -10,9 +10,9 @@
 #  reqRealTimeBars reqMktDepth reqHistoricalTicks
 #  reqHistogramData
 
+import IBKR_Tools.instrument_details as i_details
 from ibapi.client import *
 from ibapi.wrapper import *
-import IBKR_Tools.instrument_details as i_details
 
 
 def marketDataPlease(self, orderId: int, contract):
@@ -29,15 +29,23 @@ def historicDataPlease(self, orderId: int, contract):
 class MarketDataRequestApp(EClient, EWrapper):
     def __init__(self):
         EClient.__init__(self, self)
-        self.historic = True
+        self.historic = False
 
     # auto create new orderId for each request distinct data and order requests
     def nextValidId(self, orderId: int):
-        contract = i_details.stockContractApple(Contract())
 
         if self.historic:
+            contract = i_details.stockContractApple(
+                Contract())  # no market data permissions for ISLAND STK needs 'Market Data Connections'
+            # contract = i_details.optionsRequestApple(Contract())  # !200 no security definition has been found for the request
+            # contract = i_details.futuresRequestDAX(Contract()) # time zone invalid
+            print("GETTING HISTORIC DATA")
             historicDataPlease(self, orderId, contract)
         else:
+            contract = i_details.stockContractApple(Contract())  # OK Delayed
+            # contract = i_details.optionsRequestApple(Contract()) # !200 no security definition has been found for the request
+            # contract = i_details.futuresRequestDAX(Contract()) # OK Delayed
+            print("GETTING MARKET DATA")
             marketDataPlease(self, orderId, contract)
 
 
