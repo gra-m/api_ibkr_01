@@ -27,13 +27,14 @@ class PlaceSimpleOrderApp(EClient, EWrapper):
         increment(self)
 
         my_order = Order()
-        my_order.orderId = reqId
+        my_order.orderId = reqId  # EDIT submitted order? Swap this to actual returned orderId
         my_order.action = "SELL"
         my_order.tif = "GTC"  # Day order is default
         my_order.orderType = "LMT"
         my_order.lmtPrice = 160.99
         my_order.totalQuantity = 10
 
+        # Edit submitted order? Swap reqId with actual returned orderId
         self.placeOrder(reqId, contractDetails.contract, my_order)
 
     def openOrder(self, orderId: OrderId, contract: Contract, order: Order,
@@ -42,7 +43,7 @@ class PlaceSimpleOrderApp(EClient, EWrapper):
         *********{self.callBackCounter}_ORDER_OPENED**********
         openOrder. orderId: {orderId},
         contract: {contract},
-         order: {order}""")
+        order: {order}""")
         increment(self)
 
     def orderStatus(self, orderId: OrderId, status: str, filled: float, remaining: float, avgFillPrice: float, permId:
