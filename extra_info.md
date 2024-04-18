@@ -71,3 +71,15 @@ The order can be modified from the API using the modifyOrder function
 
 50 outgoing messages/second.
 
+# COMPLEX ORDERS
+
+### Which secType indicates that I am using a combo order to the system?
+
+BAG
+
+### Where can I view my open orders and executions in TWS Desktop?
+
+Activity Panel 
+
+
+

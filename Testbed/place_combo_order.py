@@ -1,5 +1,6 @@
-import IBKR_Tools.instrument_details as i_details
 from ibapi.client import *
+from ibapi.contract import ComboLeg
+from ibapi.tag_value import TagValue
 from ibapi.wrapper import *
 
 
@@ -7,34 +8,54 @@ def increment(self):
     self.callBackCounter += 1  # used to track callbacks ten in all
 
 
-class PlaceSimpleOrderApp(EClient, EWrapper):
+class PlaceComboOrderApp(EClient, EWrapper):
     def __init__(self):
         EClient.__init__(self, self)
         self.callBackCounter = 1
+        print("self created")
 
-    # this callback nextValidId is called when api calls function reqIds  in EClient class, or when  initial 4
-    # interaction is complete
     def nextValidId(self, orderId: int):
         print(f"nextValidId call = {self.callBackCounter}")
-        my_contract = i_details.stockContractApple(Contract())
-        increment(self)
+        my_contract = Contract()
+        my_contract.symbol = "AAPL,TSLA"
+        my_contract.secType = "BAG"  # 321 Error validating request bQ BAG is not supported for contract data request
+        my_contract.exchange = "SMART"
+        my_contract.currency = "USD"
+
+        leg1 = ComboLeg()
+        leg1.conId = 76792991
+        leg1.ratio = 1
+        leg1.action = "BUY"
+        leg1.exchange = "SMART"
+
+        leg2 = ComboLeg()
+        leg2.conId = 265598
+        leg2.ratio = 1
+        leg2.action = "SELL"
+        leg2.exchange = "SMART"
+
+        my_contract.comboLegs = []
+        my_contract.comboLegs.append(leg1)
+        my_contract.comboLegs.append(leg2)
         self.reqContractDetails(orderId, my_contract)
 
-    def contractDetails(self, reqId: int, contractDetails: ContractDetails):
-        print(f"""contractDetails call = {self.callBackCounter}
-        Contract details: {contractDetails.contract}""")
-        increment(self)
-
         my_order = Order()
-        my_order.orderId = reqId  # EDIT submitted order? Swap this to actual returned orderId
-        my_order.action = "SELL"
-        my_order.tif = "GTC"  # Day order is default
+        my_order.orderId = orderId
+        my_order.action = "BUY"
         my_order.orderType = "LMT"
-        my_order.lmtPrice = 168.99
+        my_order.lmtPrice = 200
         my_order.totalQuantity = 10
+        my_order.tif = "GTC"
+        my_order.smartComboRoutingParams = []
+        my_order.smartComboRoutingParams.append(TagValue('NonGuaranteed', '1'))
 
-        # Edit submitted order? Swap reqId with actual returned orderId
-        self.placeOrder(reqId, contractDetails.contract, my_order)
+        increment(self)
+        self.placeOrder(orderId, my_contract, my_order)
+
+    #   def contractDetails(self, reqId: int, contractDetails: ContractDetails):
+    # print(f"""contractDetails call = {self.callBackCounter}
+    # Contract details: {contractDetails.contract}""")
+    # increment(self)
 
     def openOrder(self, orderId: OrderId, contract: Contract, order: Order,
                   orderState: OrderState):
@@ -63,7 +84,6 @@ class PlaceSimpleOrderApp(EClient, EWrapper):
         mktCapPrice: {mktCapPrice}""")
         increment(self)
 
-    # will callback for every separate necesssary execution:
     def execDetails(self, reqId: int, contract: Contract, execution: Execution):
         print(f"""
         
@@ -75,6 +95,6 @@ class PlaceSimpleOrderApp(EClient, EWrapper):
         # self.disconnect()
 
 
-app = PlaceSimpleOrderApp()
+app = PlaceComboOrderApp()
 app.connect("127.0.0.1", 4002, 1000)
 app.run()
