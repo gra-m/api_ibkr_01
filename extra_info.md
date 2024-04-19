@@ -26,7 +26,7 @@ No, a brief pause is often necessary, the end of which is best indicated by othe
 ### An API Contract object
 
 can be defined in multiple ways to specify the same instrument in IB's database AND must match a single financial
-instrument that is tradable at IB to use with functions such as placeOrder or reqMktData.
+instrument that is tradeable at IB to use with functions such as placeOrder or reqMktData.
 
 ### If a very large amount of historical data is requested from the API,
 
@@ -80,6 +80,32 @@ BAG
 ### Where can I view my open orders and executions in TWS Desktop?
 
 Activity Panel 
+
+# ACCESSING PORTFOLIO DATA
+
+### The statement 'After a trade occurs, it is necessary to re-query current position information' is:
+
+False: if an active subscription to portfolio information was previously made, the updated value will be sent
+immediately. Correct.
+
+### Portfolio and account subscription functions send data about every position/account value with every update:
+
+False, after the initial complete batch of information only updates are sent. Correct.
+
+### Which of the following statements about option chains is true?
+
+The best procedure for longer chains is to use reqSecDefOptParams to receive a list of strikes and expiries, and then
+reqContractDetails to receive details about each strike/expiry combination. Correct.
+
+### Information about historical trades and positions is available:
+
+From flex queries which can be accessed programmatically. Correct.
+
+### In addition to retrieving option chains, the reqContractDetails function can:
+
+Receive additional details about a contract AND
+Check if a contract is valid AND
+Return a list of matching contracts for a partially defined contract object
 
 
 
