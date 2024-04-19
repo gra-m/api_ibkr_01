@@ -1,7 +1,7 @@
-from IBKR_Tools import confirmation_tools
-from Testbed.IBKR_Tools import _constants
-from ibapi.client import *
-from ibapi.wrapper import *
+from IBKR_Tools import file_utils as fu
+from Testbed.IBKR_Tools import constants
+from ibapi.client import EClient
+from ibapi.wrapper import EWrapper
 
 
 class GetScannerDataApp(EClient, EWrapper):
@@ -11,13 +11,15 @@ class GetScannerDataApp(EClient, EWrapper):
     def nextValidId(self, orderId: int):
         self.reqScannerParameters()
 
-    def scannerParameters(self, xml: str):
-        save_to_directory = _constants.TIMESTAMPED_IBKR_SCANNER_XML
-        open(save_to_directory, 'w').write(xml)
-        confirmation_tools.confirm_data(_constants.TIMESTAMPED_IBKR_SCANNER_XML)
+    def scannerParameters(self, scanner_params_xml_data: str):
+        output_file_path = constants.FILE_PATH
+
+        fu.FileUtils.writeToFile(output_file_path, scanner_params_xml_data)
+        fu.FileUtils.confirmData(output_file_path)
+
         self.disconnect()
 
 
-app = GetScannerDataApp()
-app.connect(_constants.LOCAL, _constants.IB_GATEWAY_PORT, _constants.GENERAL_CLIENT_ID)
-app.run()
+scannerDataApp = GetScannerDataApp()
+scannerDataApp.connect(constants.LOCALHOST_IP, constants.IB_GATEWAY_PORT, constants.DEFAULT_CLIENT_ID)
+scannerDataApp.run()
